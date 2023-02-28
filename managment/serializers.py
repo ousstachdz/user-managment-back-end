@@ -9,16 +9,22 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class UserSerializer(serializers.ModelSerializer):
-    profile = ProfileSerializer()
+class UserBasicsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
         fields = [
             'id', 'first_name', 'last_name',
-            'last_login', 'date_joined', 'username',
-            'email', 'profile'
         ]
+
+
+class UserDetailsSerializer(serializers.ModelSerializer):
+    profile = ProfileSerializer()
+
+    class Meta:
+        model = User
+        # fields = '__all__'
+        exclude = ['password', 'user_permissions', 'groups', 'user_ptr']
 
         extra_kwargs = {
             'email': {'read_only': True},
